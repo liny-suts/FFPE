@@ -1,9 +1,7 @@
 library(ggvenn)
 #load('FFPE_object.RData')
 ###paired DEG analysis for Lung tissue###
-countdata<-Lung_count%>%filter(Gene.ID%in%ensembl_hgnc$Gene.ID)%>%
-  select(Lung_paired_meta$SPECIMEN_ID)%>%
-  data.frame(row.names = ensembl_hgnc$Gene.ID)
+countdata<-Lung_code_count
 dds<- DESeqDataSetFromMatrix(countData = as.matrix(countdata),
                              colData = Lung_paired_meta,
                              design = ~sampleid+FF)
@@ -24,7 +22,6 @@ sampletype = factor(BPVpaired_meta$Body.Site[target])
 sampleid <- factor(BPVpaired_meta$sampleid[target])
 coldata<-data.frame(row.names = BPVpaired_meta$Run[target],condition,sampleid,sampletype)
 countdata<-BPV_count%>%
-  filter(.,Gene.ID%in%ensembl_hgnc$Gene.ID)%>%
   select(.,BPVpaired_meta$Run[target])
 dds<- DESeqDataSetFromMatrix(countData = as.matrix(countdata),
                              colData = coldata,
